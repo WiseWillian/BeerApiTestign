@@ -118,5 +118,13 @@ func TestAbv(t *testing.T){
 				}
 			}
 		}
+
+		body, err := makeRequest(style, i + 1)
+
+		if err != nil {
+			t.Fatal(err)
+		}
+
+		beers, err_parse = getAllBeers(body) 
 	}
 }
