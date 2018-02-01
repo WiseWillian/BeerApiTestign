@@ -107,4 +107,8 @@ func TestAbv(t *testing.T){
 	if err_parse != nil {
 		t.Error(err_parse)
 	}
+
+	for i := beers.CurrentPage; i <= beers.NumberOfPages; i++ {
+		
+	}
 }
