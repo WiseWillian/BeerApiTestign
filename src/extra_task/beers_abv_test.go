@@ -67,7 +67,16 @@ type BeerApiResponse struct {
 	Data []Beer `json:"data"`
 }
 
+func makeRequest(style int, page int) ([]byte, error) {
+
+}
+
 func TestAbv(t *testing.T){
 	var style int = 1
 
+	body, err := makeRequest(style, 0)
+
+	if err != nil {
+		t.Fatal(err)
+	}
 }
