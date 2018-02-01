@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"io/ioutil"
 	"net/http"
+	"encode/json"
 )
 
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
@@ -83,6 +84,13 @@ func makeRequest(style int, page int) ([]byte, error) {
 	}
 	
 	return nil, err_req
+}
+
+func getAllBeers(body []byte) (*BeerApiResponse, error){
+	var beers = new (BeerApiResponse)
+	err := json.Unmarshal(body, &beers)
+
+	return beers, err
 }
 
 func TestAbv(t *testing.T){
