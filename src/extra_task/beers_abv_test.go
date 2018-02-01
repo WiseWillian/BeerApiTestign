@@ -101,4 +101,10 @@ func TestAbv(t *testing.T){
 	if err != nil {
 		t.Fatal(err)
 	}
+
+	beers, err_parse := getAllBeers(body) //Transforma o array de bytes e objetos
+
+	if err_parse != nil {
+		t.Error(err_parse)
+	}
 }
