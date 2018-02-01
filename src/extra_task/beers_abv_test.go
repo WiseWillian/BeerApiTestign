@@ -2,6 +2,9 @@ package main
 
 import (
 	"testing"
+	"strconv"
+	"io/ioutil"
+	"net/http"
 )
 
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
@@ -65,5 +68,6 @@ type BeerApiResponse struct {
 }
 
 func TestAbv(t *testing.T){
+	var style int = 1
 
 }
