@@ -110,7 +110,11 @@ func TestAbv(t *testing.T){
 
 	for i := beers.CurrentPage; i <= beers.NumberOfPages; i++ {
 		for j := range beers.Data {
-
+			if beers.Data[j].Abv != "" {
+				abv, _ := strconv.ParseFloat(beers.Data[j].Abv, 64)
+				max_abv, _ := strconv.ParseFloat(beers.Data[j].BeerStyle.AbvMax, 64)
+				min_abv, _ := strconv.ParseFloat(beers.Data[j].BeerStyle.AbvMin, 64)
+			}
 		}
 	}
 }
