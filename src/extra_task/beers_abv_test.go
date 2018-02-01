@@ -69,11 +69,7 @@ type BeerApiResponse struct {
 }
 
 func makeRequest(style int, page int) ([]byte, error) {
-	var request string = endpoint + apiKey + "&styleId=" + strconv.Itoa(style)
-	
-	if page != 0 {
-		request += "&p=" + strconv.Itoa(page)
-	}
+	var request string = endpoint + apiKey + "&styleId=" + strconv.Itoa(style) + "&p=" + strconv.Itoa(page)
 
 	resp, err_req := http.Get(request) //Faz a requisição para o endpoint
 
@@ -96,7 +92,7 @@ func getAllBeers(body []byte) (*BeerApiResponse, error){
 func TestAbv(t *testing.T){
 	var style int = 1
 
-	body, err := makeRequest(style, 0)
+	body, err := makeRequest(style, 1)
 
 	if err != nil {
 		t.Fatal(err)
@@ -108,12 +104,18 @@ func TestAbv(t *testing.T){
 		t.Error(err_parse)
 	}
 
-	for i := beers.CurrentPage; i <= beers.NumberOfPages; i++ {
+	for i := 1; i <= beers.NumberOfPages; i++ {
 		for j := range beers.Data {
 			if beers.Data[j].Abv != "" {
 				abv, _ := strconv.ParseFloat(beers.Data[j].Abv, 64)
 				max_abv, _ := strconv.ParseFloat(beers.Data[j].BeerStyle.AbvMax, 64)
 				min_abv, _ := strconv.ParseFloat(beers.Data[j].BeerStyle.AbvMin, 64)
+
+				if abv > max_abv {
+					t.Error("Id da bebida: " + beers.Data[j].Id + "A quantidade de álcool da bebida é maior do que a que seu estilo prevê: " + beers.Data[j].BeerStyle.AbvMax)
+				} else if abv < min_abv {
+					t.Error("Id da bebida: " + beers.Data[j].Id + "A quantidade de álcool da bebida é menor do que a que seu estilo prevê: " + beers.Data[j].BeerStyle.AbvMin)
+				}
 			}
 		}
 	}
