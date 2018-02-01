@@ -68,7 +68,11 @@ type BeerApiResponse struct {
 }
 
 func makeRequest(style int, page int) ([]byte, error) {
-
+	var request string = endpoint + apiKey + "&styleId=" + strconv.Itoa(style)
+	
+	if page != 0 {
+		request += "&p=" + strconv.Itoa(page)
+	}
 }
 
 func TestAbv(t *testing.T){
