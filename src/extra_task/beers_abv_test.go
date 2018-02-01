@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"io/ioutil"
 	"net/http"
-	"encode/json"
+	"encoding/json"
 )
 
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
@@ -109,6 +109,8 @@ func TestAbv(t *testing.T){
 	}
 
 	for i := beers.CurrentPage; i <= beers.NumberOfPages; i++ {
-		
+		for j := range beers.Data {
+
+		}
 	}
 }
