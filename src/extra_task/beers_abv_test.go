@@ -4,6 +4,9 @@ import (
 	"testing"
 )
 
+const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
+const apiKey = "47705820af1e5f9f31c6700101bc6494" //A chave da api cadastrada pelo desenvolvedor
+
 type Category struct {
 	Id int `json:"id"`
 	Name string `json:"name"`
