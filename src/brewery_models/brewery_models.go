@@ -1,9 +1,5 @@
 package main
 
-import (
-	"testing"
-)
-
 type Category struct {
 	Id int `json:"id"`
 	Name string `json:"name"`
@@ -59,8 +55,4 @@ type BeerApiResponse struct {
 	NumberOfPages int `json:"numberOfPages"`
 	TotalResults int `json:"totalResults"`
 	Data []Beer `json:"data"`
-}
-
-func TestAbv(t *testing.T){
-
 }
