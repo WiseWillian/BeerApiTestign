@@ -73,6 +73,16 @@ func makeRequest(style int, page int) ([]byte, error) {
 	if page != 0 {
 		request += "&p=" + strconv.Itoa(page)
 	}
+
+	resp, err_req := http.Get(request) //Faz a requisição para o endpoint
+
+	if err_req == nil {
+		//Caso a requisição seja feita corretamente devemos processar a informacao
+		body, err_read := ioutil.ReadAll(resp.Body) //Transformamos a resposta em []Byte
+		return body, err_read
+	}
+	
+	return nil, err_req
 }
 
 func TestAbv(t *testing.T){
