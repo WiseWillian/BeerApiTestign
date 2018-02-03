@@ -348,5 +348,9 @@ func TestMain(t *testing.T) {
 		}
 	}
 
+	for i := range test_errors {
+		t.Error(test_errors[i])
+	}
+
 	defer resp.Body.Close()
 }
