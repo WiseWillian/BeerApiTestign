@@ -69,14 +69,19 @@ type BeerApiResponse struct {
 	Data []Beer `json:"data"`
 }
 
+func fieldIsString(field interface{}) bool {
+	_, ok := field.(string)
+	return ok
+}
+
+func fieldIsNumber(field interface{}) bool {
+	_, ok := field.(float64)
+	return ok
+}
+
 func getAllBeers(body []byte) (*BeerApiResponse, error){
 	var beers = new (BeerApiResponse)
 	err := json.Unmarshal(body, &beers)
-
-	/* Todas as structs predefinem o tipo de variavel que deve ser recebida (Name string por ex,),
-	dessa forma, se o tipo da variavel recebida for diferente do tipo especificado, um erro do tipo 
-	TypeMismatch será lançado pelo método json.Unmarshal, caso contrário, todas as informações foram 
-	recebidas corretamente, conforme o especificado */
 
 	return beers, err
 }
