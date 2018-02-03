@@ -330,5 +330,15 @@ func TestMain(t *testing.T) {
 		test_errors = append(test_errors, err)
 	}
 
+	if !fieldIsNumber(beers.NumberOfPages) {
+		err := errors.New("O numero de paginas (BeerApiResponse.NumberOfPages) possui tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsNumber(beers.TotalResults) {
+		err := errors.New("O total de resultados (BeerApiResponse.TotalResults) possui tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
 	defer resp.Body.Close()
 }
