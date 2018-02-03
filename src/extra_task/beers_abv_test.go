@@ -1,73 +1,24 @@
-package main
+package mytest
+
+// Autor: Rafael Willian 
+//
+// Descrição: Esse código se trata de um teste automatizado que verifica se o
+// teor alcoólico da bebida se adequa ao estilo na qual ela se encontra. Para isso
+// comparamos o atributo 'abv'(Alcohol by volume) da bebida com os atributos 'abv_max'
+// e 'abv_min' presentes no estilo da bebida.
 
 import (
 	"testing"
 	"strconv"
 	"io/ioutil"
 	"net/http"
-	"encoding/json"
+	"beers_models"
 )
 
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
 const apiKey = "47705820af1e5f9f31c6700101bc6494" //A chave da api cadastrada pelo desenvolvedor
 
-type Category struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	CreateDate string `json:"createDate"`
-}
-
-type Available struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	Description string `json:"description"`
-}
-
-type Style struct {
-	Id int `json:"id"`
-	CategoryId int `json:"categoryId"`
-	StyleCategory Category `json:"category"`
-	Name string `json:"name"`
-	ShortName string `json:"shortName"`
-	Description string `json:"description"`
-	IbuMin string `json:"ibuMin"`
-	IbuMax string `json:"ibuMax"`
-	AbvMin string `json:"abvMin"`
-	AbvMax string `json:"abvMax"`
-	SrmMin string `json:"srmMin"`
-	SrmMax string `json:"srmMax"`
-	OgMin string `json:"ogMin"`
-	FgMin string `json:"fgMin"`
-	FgMax string `json:"fgMax"`
-	CreateDate string `json:"createDate"`
-	UpdateDate string `json:"updateDate"`
-}
-
-type Beer struct {
-	Id string `json:"id"`
-	Name string `json:"name"`
-	NameDisplay string `json:"nameDisplay"`
-	Description string `json:"description"`
-	Abv string `json:"abv"`
-	Ibu string `json:"ibu"`
-	AvailableId int `json:"availableId"`
-	StyleId int `json:"styleId"`
-	IsOrganic string `json:"isOrganic"`
-	Status string `json:"status"`
-	StatusDisplay string `json:"statusDisplay"`
-	CreateDate string `json:"createDate"`
-	UpdateDate string `json:"updateDate"`
-	BeerAvailable Available `json:"available"`
-	BeerStyle Style `json:"style"`
-}
-
-type BeerApiResponse struct {
-	CurrentPage int `json:"currentPage"`
-	NumberOfPages int `json:"numberOfPages"`
-	TotalResults int `json:"totalResults"`
-	Data []Beer `json:"data"`
-}
-
+//Função que faz a requisição ao endpoint e retorna um []Byte
 func makeRequest(style int, page int) ([]byte, error) {
 	var request string = endpoint + apiKey + "&styleId=" + strconv.Itoa(style) + "&p=" + strconv.Itoa(page)
 
@@ -82,49 +33,50 @@ func makeRequest(style int, page int) ([]byte, error) {
 	return nil, err_req
 }
 
-func getAllBeers(body []byte) (*BeerApiResponse, error){
-	var beers = new (BeerApiResponse)
-	err := json.Unmarshal(body, &beers)
-
-	return beers, err
-}
-
+//Função principal do teste, que verifica se o abv da bebida está dentro do estilo
 func TestAbv(t *testing.T){
-	var style int = 1
+	var style int = 1 //O estilo a ser verificado
 
 	body, err := makeRequest(style, 1)
 
+	//Verificação de um possível erro na requisicao
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	beers, err_parse := getAllBeers(body) //Transforma o array de bytes e objetos
+	beers, err_parse := beers_models.GetAllBeers(body) //Transforma o array de bytes e objetos
 
+	//Verificação de erro na transformação do body []Byte em beers BeerApiResponse
 	if err_parse != nil {
 		t.Error(err_parse)
 	}
 
-	for i := 1; i <= beers.NumberOfPages; i++ {
-		for j := range beers.Data {
-			if beers.Data[j].Abv != "" {
-				abv, _ := strconv.ParseFloat(beers.Data[j].Abv, 64)
+	for i := 1; i <= beers.NumberOfPages; i++ { //Loop que navega entre paginas da resposta
+		for j := range beers.Data { //Loop que itera sobre todas as bebidas da resposta
+			if beers.Data[j].Abv != "" { //Caso a bebida possua um indice ABV
+
+				//Capta o ABV da bebida, ABV maximo e minimo do estilo em numero
+				abv, _ := strconv.ParseFloat(beers.Data[j].Abv, 64) 
 				max_abv, _ := strconv.ParseFloat(beers.Data[j].BeerStyle.AbvMax, 64)
 				min_abv, _ := strconv.ParseFloat(beers.Data[j].BeerStyle.AbvMin, 64)
 
+				//Verifica se existe uma incongruencia entre o teor alcoólico da bebida e do estilo
 				if abv > max_abv {
-					t.Error("Id da bebida: " + beers.Data[j].Id + "A quantidade de álcool da bebida é maior do que a que seu estilo prevê: " + beers.Data[j].BeerStyle.AbvMax)
+					t.Error("Id da bebida: " + beers.Data[j].Id + "A quantidade de álcool da bebida (" + beers.Data[j].Abv + ") é maior do que a que seu estilo prevê: " + beers.Data[j].BeerStyle.AbvMax)
 				} else if abv < min_abv {
-					t.Error("Id da bebida: " + beers.Data[j].Id + "A quantidade de álcool da bebida é menor do que a que seu estilo prevê: " + beers.Data[j].BeerStyle.AbvMin)
+					t.Error("Id da bebida: " + beers.Data[j].Id + "A quantidade de álcool da bebida (" + beers.Data[j].Abv + ") é menor do que a que seu estilo prevê: " + beers.Data[j].BeerStyle.AbvMin)
 				}
 			}
 		}
 
-		body, err := makeRequest(style, i + 1)
+		body, err := makeRequest(style, i + 1) //Faz a requisição da próxima página
 
+		//Verifica se houve erro na requisição da proxima página
 		if err != nil {
 			t.Fatal(err)
 		}
 
-		beers, err_parse = getAllBeers(body) 
+		//Transforma a proxima página em novo objeto BeerApiResponse
+		beers, err_parse = beers_models.GetAllBeers(body) 
 	}
 }
