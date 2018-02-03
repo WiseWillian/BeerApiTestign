@@ -323,7 +323,12 @@ func TestMain(t *testing.T) {
 
 	beers, err_parse := getAllBeers(body) //Transforma o array de bytes em objetos
 
+	var test_errors []error
 
+	if !fieldIsNumber(beers.CurrentPage) {
+		err := errors.New("A pagina atual (BeerApiResponse.CurrentPage) possui tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
 
 	defer resp.Body.Close()
 }
