@@ -340,5 +340,13 @@ func TestMain(t *testing.T) {
 		test_errors = append(test_errors, err)
 	}
 
+	for i := range beers.Data {
+		arr := testBeerTypes(beers.Data[i])
+
+		for i := range arr {
+			test_errors = append(test_errors, arr[i])
+		}
+	}
+
 	defer resp.Body.Close()
 }
