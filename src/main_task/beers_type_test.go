@@ -113,6 +113,98 @@ func testAvailableTypes(available Available) []error {
 	return test_errors
 }
 
+func testStyleTypes(style Style) []error {
+	var test_errors []error
+	
+	if !fieldIsNumber(style.Id) && style.Id != nil {
+		err := errors.New("O id do estilo (Style.Id) tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsNumber(style.CategoryId) && style.CategoryId != nil {
+		err := errors.New("O id da categoria do estilo (Style.CategoryId) tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	arr := testCategoryTypes(style.StyleCategory)
+
+	for i := range arr {
+		test_errors = append(test_errors, arr[i])
+	}
+
+	if !fieldIsString(style.Name) && style.Name != nil {
+		err := errors.New("O nome do estilo (Style.Name) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.ShortName) && style.ShortName != nil {
+		err := errors.New("A abreviação do nome do estilo (Style.ShortName) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.Description) && style.Description != nil {
+		err := errors.New("A descrição do estilo (Style.Description) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.IbuMin) && style.IbuMin != nil {
+		err := errors.New("O IBU mínimo do estilo (Style.IbuMin) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.IbuMax) && style.IbuMax != nil {
+		err := errors.New("O IBU máximo do estilo (Style.IbuMax) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.AbvMin) && style.AbvMin != nil {
+		err := errors.New("O ABV mínimo do estilo (Style.AbvMin) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.AbvMax) && style.AbvMax != nil {
+		err := errors.New("O ABV máximo do estilo (Style.AbvMax) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.SrmMin) && style.SrmMin != nil {
+		err := errors.New("O SRM mínimo do estilo (Style.SrmMin) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.SrmMax) && style.SrmMax != nil {
+		err := errors.New("O SRM máximo do estilo (Style.SrmMax) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.OgMin) && style.OgMin != nil {
+		err := errors.New("O OG mínimo do estilo (Style.OgMin) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.FgMin) && style.FgMin != nil {
+		err := errors.New("O FG mínimo do estilo (Style.FgMin) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.FgMax) && style.FgMax != nil {
+		err := errors.New("O FG máximo do estilo (Style.FgMax) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.CreateDate) && style.CreateDate != nil {
+		err := errors.New("A data de criação do estilo (Style.CreateDate) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(style.UpdateDate) && style.UpdateDate != nil {
+		err := errors.New("A data de modificação do estilo (Style.CreateDate) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	return test_errors
+}
+
 func fieldIsString(field interface{}) bool {
 	_, ok := field.(string)
 	return ok
