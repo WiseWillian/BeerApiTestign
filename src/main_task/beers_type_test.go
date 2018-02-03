@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"io/ioutil"
 	"testing"
 	"net/http"
@@ -310,8 +309,7 @@ func TestMain(t *testing.T) {
 	resp, err_req := http.Get(endpoint + apiKey + "&styleId=" + strconv.Itoa(estilo)) //Faz a requisição para o endpoint
 
 	//Testa um eventual erro na requisição
-	if err_req != nil { 
-		fmt.Println("Erro ao contatar o Endpoint: " + endpoint)
+	if err_req != nil {
 		t.Fatal(err_req)
 	}
 
@@ -320,7 +318,6 @@ func TestMain(t *testing.T) {
 
 	//Testa um erro na leitura e transformação da resposta
 	if err_read != nil {
-		fmt.Println("Erro ao ler a resposta")
 		t.Fatal(err_read)
 	}
 
