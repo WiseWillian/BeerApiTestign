@@ -1,21 +1,29 @@
 package beers_models
 
+// Autor: Rafael Willian
+//
+// Descrição: Uma biblioteca que possui o modelo de descrição do endpoint /beers em estruturas de dados,
+// assim como a função que caracteriza a criação de objetos a partir destes modelos
+
 import (
 	"encoding/json"
 )
 
+//Guarda a categoria do estilo
 type Category struct {
 	Id int `json:"id"`
 	Name string `json:"name"`
 	CreateDate string `json:"createDate"`
 }
 
+//Guarda detalhes sobre a disponibilidade da bebida
 type Available struct {
 	Id int `json:"id"`
 	Name string `json:"name"`
 	Description string `json:"description"`
 }
 
+//Guarda a informação sobre o estilo da bebida
 type Style struct {
 	Id int `json:"id"`
 	CategoryId int `json:"categoryId"`
@@ -36,6 +44,7 @@ type Style struct {
 	UpdateDate string `json:"updateDate"`
 }
 
+//Guarda a informação da bebida individualmente
 type Beer struct {
 	Id string `json:"id"`
 	Name string `json:"name"`
@@ -54,6 +63,7 @@ type Beer struct {
 	BeerStyle Style `json:"style"`
 }
 
+//Guarda toda a informação da requisição
 type BeerApiResponse struct {
 	CurrentPage int `json:"currentPage"`
 	NumberOfPages int `json:"numberOfPages"`
@@ -61,6 +71,7 @@ type BeerApiResponse struct {
 	Data []Beer `json:"data"`
 }
 
+//Função que transforma o array json em dados estruturados
 func GetAllBeers(body []byte) (*BeerApiResponse, error){
 	var beers = new (BeerApiResponse)
 	err := json.Unmarshal(body, &beers)
