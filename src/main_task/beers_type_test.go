@@ -205,6 +205,89 @@ func testStyleTypes(style Style) []error {
 	return test_errors
 }
 
+func testBeerTypes(beer Beer) []error {
+	var test_errors []error
+
+	if !fieldIsString(beer.Id) && beer.Id != nil {
+		err := errors.New("O Id da bebida(Beer.Id) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.Name) && beer.Name != nil {
+		err := errors.New("O nome da bebida (Beer.Name) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.NameDisplay) && beer.NameDisplay != nil {
+		err := errors.New("O nome em display da bebida(Beer.NameDisplay) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.Description) && beer.Description != nil {
+		err := errors.New("A descrição da bebida (Beer.Description) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.Abv) && beer.Abv != nil {
+		err := errors.New("O ABV da bebida(Beer.Abv) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.Ibu) && beer.Ibu != nil {
+		err := errors.New("O IBU da bebida (Beer.Ibu) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsNumber(beer.AvailableId) && beer.AvailableId != nil {
+		err := errors.New("O id de available da bebida (Beer.AvailableId) tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsNumber(beer.StyleId) && beer.StyleId != nil {
+		err := errors.New("O id do estilo da bebida (Beer.StyleId) tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.IsOrganic) && beer.IsOrganic != nil {
+		err := errors.New("A flag IsOrganic da bebida (Beer.IsOrganic) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.Status) && beer.Status != nil {
+		err := errors.New("O status da bebida (Beer.Status) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.StatusDisplay) && beer.StatusDisplay != nil {
+		err := errors.New("O display de status da bebida (Beer.Status) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.CreateDate) && beer.CreateDate != nil {
+		err := errors.New("A data de criação da bebida (Beer.CreateDate) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(beer.UpdateDate) && beer.UpdateDate != nil {
+		err := errors.New("A data de modificação da bebida (Beer.CreateDate) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	arr := testAvailableTypes(beer.BeerAvailable)
+
+	for i := range arr {
+		test_errors = append(test_errors, arr[i])
+	}
+
+	arr = testStyleTypes(beer.BeerStyle)
+
+	for i := range arr {
+		test_errors = append(test_errors, arr[i])
+	}
+
+	return test_errors
+}
+
 func fieldIsString(field interface{}) bool {
 	_, ok := field.(string)
 	return ok
@@ -243,7 +326,7 @@ func TestMain(t *testing.T) {
 		t.Fatal(err_read)
 	}
 
-	beers, err_parse := getAllBeers(body) //Transforma o array de bytes e objetos
+	beers, err_parse := getAllBeers(body) //Transforma o array de bytes em objetos
 
 	if err_parse != nil {
 		t.Error(err_parse)
