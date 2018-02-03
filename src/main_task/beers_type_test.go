@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"encoding/json"
 	"strconv"
+	"errors"
 )
 
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
@@ -67,6 +68,27 @@ type BeerApiResponse struct {
 	NumberOfPages interface{} `json:"numberOfPages"`
 	TotalResults interface{} `json:"totalResults"`
 	Data []Beer `json:"data"`
+}
+
+func testCategoryTypes(category Category) []error {
+	var test_errors []error
+	
+	if !fieldIsNumber(category.Id) && category.Id != nil{
+		err := errors.New("O id da categoria (Category.Id) possui tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(category.Name) && category.Name != nil {
+		err := errors.New("O nome da categoria (Category.Name) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(category.CreateDate) && category.CreateDate != nil {
+		err := errors.New("A data de criação da categoria (Category.CreateDate) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	return test_errors
 }
 
 func fieldIsString(field interface{}) bool {
