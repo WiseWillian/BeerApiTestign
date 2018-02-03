@@ -6,11 +6,11 @@ import (
 	"testing"
 	"net/http"
 	"encoding/json"
+	"strconv"
 )
 
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
 const apiKey = "47705820af1e5f9f31c6700101bc6494" //A chave da api cadastrada pelo desenvolvedor
-const chave = "styleId=1" //A pesquisa sera baseada pelo estilo da bebida. O Id 1 se refere à 'Classic English-Style Pale Ale'
 
 type Category struct {
 	Id int `json:"id"`
@@ -82,7 +82,8 @@ func getAllBeers(body []byte) (*BeerApiResponse, error){
 }
 
 func TestMain(t *testing.T) {
-	resp, err_req := http.Get(endpoint + apiKey + "&" + chave) //Faz a requisição para o endpoint
+	var estilo int = 1
+	resp, err_req := http.Get(endpoint + apiKey + "&styleId=" + strconv.Itoa(estilo)) //Faz a requisição para o endpoint
 
 	//Testa um eventual erro na requisição
 	if err_req != nil { 
