@@ -20,8 +20,6 @@ Clone o repositório no local desejado
 git clone https://github.com/WiseWillian/BeerApiTesting/
 ```
 
-### Caso seu sistema não seja linux_amd64
-
 Navegue até o diretório clonado e execute: 
 
 ```
@@ -31,6 +29,8 @@ export GOPATH=$HOME/Local de clonagem/BeerApiTester
 ```
 export GOBIN=$HOME/Local de clonagem/BeerApiTester/bin
 ```
+
+### Caso seu sistema não seja linux_amd64 execute também:
 
 ```
 go install src/beers_models
