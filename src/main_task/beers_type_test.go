@@ -91,6 +91,28 @@ func testCategoryTypes(category Category) []error {
 	return test_errors
 }
 
+func testAvailableTypes(available Available) []error {
+	var test_errors []error
+	
+	if !fieldIsNumber(available.Id) && available.Id != nil {
+		fmt.Println("Passou")
+		err := errors.New("O id de available (Available.Id) possui tipo diferente de int")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(available.Name) && available.Name != nil {
+		err := errors.New("O nome de available (Available.Name) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	if !fieldIsString(available.Description) && available.Description != nil {
+		err := errors.New("A descrição de available (Available.Description) possui tipo diferente de string")
+		test_errors = append(test_errors, err)
+	}
+
+	return test_errors
+}
+
 func fieldIsString(field interface{}) bool {
 	_, ok := field.(string)
 	return ok
