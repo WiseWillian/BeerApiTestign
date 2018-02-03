@@ -314,8 +314,6 @@ func TestMain(t *testing.T) {
 		fmt.Println("Erro ao contatar o Endpoint: " + endpoint)
 		t.Fatal(err_req)
 	}
-	
-	fmt.Println(resp.TransferEncoding)
 
 	//Caso a requisição seja feita corretamente devemos processar a informacao
 	body, err_read := ioutil.ReadAll(resp.Body) //Transformamos a resposta em []Byte
@@ -328,13 +326,7 @@ func TestMain(t *testing.T) {
 
 	beers, err_parse := getAllBeers(body) //Transforma o array de bytes em objetos
 
-	if err_parse != nil {
-		t.Error(err_parse)
-	}
 
-	for i := range beers.Data {
-		t.Log(beers.Data[i].Name)
-	}
 
 	defer resp.Body.Close()
 }
