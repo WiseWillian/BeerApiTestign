@@ -13,59 +13,59 @@ const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a
 const apiKey = "47705820af1e5f9f31c6700101bc6494" //A chave da api cadastrada pelo desenvolvedor
 
 type Category struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	CreateDate string `json:"createDate"`
+	Id interface{} `json:"id"`
+	Name interface{} `json:"name"`
+	CreateDate interface{} `json:"createDate"`
 }
 
 type Available struct {
-	Id int `json:"id"`
-	Name string `json:"name"`
-	Description string `json:"description"`
+	Id interface{} `json:"id"`
+	Name interface{} `json:"name"`
+	Description interface{} `json:"description"`
 }
 
 type Style struct {
-	Id int `json:"id"`
-	CategoryId int `json:"categoryId"`
+	Id interface{} `json:"id"`
+	CategoryId interface{} `json:"categoryId"`
 	StyleCategory Category `json:"category"`
-	Name string `json:"name"`
-	ShortName string `json:"shortName"`
-	Description string `json:"description"`
-	IbuMin string `json:"ibuMin"`
-	IbuMax string `json:"ibuMax"`
-	AbvMin string `json:"abvMin"`
-	AbvMax string `json:"abvMax"`
-	SrmMin string `json:"srmMin"`
-	SrmMax string `json:"srmMax"`
-	OgMin string `json:"ogMin"`
-	FgMin string `json:"fgMin"`
-	FgMax string `json:"fgMax"`
-	CreateDate string `json:"createDate"`
-	UpdateDate string `json:"updateDate"`
+	Name interface{} `json:"name"`
+	ShortName interface{} `json:"shortName"`
+	Description interface{} `json:"description"`
+	IbuMin interface{} `json:"ibuMin"`
+	IbuMax interface{} `json:"ibuMax"`
+	AbvMin interface{} `json:"abvMin"`
+	AbvMax interface{} `json:"abvMax"`
+	SrmMin interface{} `json:"srmMin"`
+	SrmMax interface{} `json:"srmMax"`
+	OgMin interface{} `json:"ogMin"`
+	FgMin interface{} `json:"fgMin"`
+	FgMax interface{} `json:"fgMax"`
+	CreateDate interface{} `json:"createDate"`
+	UpdateDate interface{} `json:"updateDate"`
 }
 
 type Beer struct {
-	Id string `json:"id"`
-	Name string `json:"name"`
-	NameDisplay string `json:"nameDisplay"`
-	Description string `json:"description"`
-	Abv string `json:"abv"`
-	Ibu string `json:"ibu"`
-	AvailableId int `json:"availableId"`
-	StyleId int `json:"styleId"`
-	IsOrganic string `json:"isOrganic"`
-	Status string `json:"status"`
-	StatusDisplay string `json:"statusDisplay"`
-	CreateDate string `json:"createDate"`
-	UpdateDate string `json:"updateDate"`
+	Id interface{} `json:"id"`
+	Name interface{} `json:"name"`
+	NameDisplay interface{} `json:"nameDisplay"`
+	Description interface{} `json:"description"`
+	Abv interface{} `json:"abv"`
+	Ibu interface{} `json:"ibu"`
+	AvailableId interface{} `json:"availableId"`
+	StyleId interface{} `json:"styleId"`
+	IsOrganic interface{} `json:"isOrganic"`
+	Status interface{} `json:"status"`
+	StatusDisplay interface{} `json:"statusDisplay"`
+	CreateDate interface{} `json:"createDate"`
+	UpdateDate interface{} `json:"updateDate"`
 	BeerAvailable Available `json:"available"`
 	BeerStyle Style `json:"style"`
 }
 
 type BeerApiResponse struct {
-	CurrentPage int `json:"currentPage"`
-	NumberOfPages int `json:"numberOfPages"`
-	TotalResults int `json:"totalResults"`
+	CurrentPage interface{} `json:"currentPage"`
+	NumberOfPages interface{} `json:"numberOfPages"`
+	TotalResults interface{} `json:"totalResults"`
 	Data []Beer `json:"data"`
 }
 
