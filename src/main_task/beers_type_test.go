@@ -1,5 +1,16 @@
 package main
 
+// Autor: Rafael Willian
+//
+// Descrição: Este código testa os tipos de dados retornados pela Api da BreweryDB, checando se os
+// dados retornados correspondem aos dados esperados. Os campos das estruturas de dados são definidos
+// como interface{}, sendo assim possivel postergar o type assignment. É possível fazer a checagem do
+// tipo que uma interface carrega da seguinte forma: 
+//
+// var myvar interface{} = "string"
+// s, ok := myvar.(string)
+// onde 's' é o valor contido e 'ok' guarda um booleano que indica se a variável é ou não do tipo
+
 import (
 	"io/ioutil"
 	"testing"
@@ -12,18 +23,21 @@ import (
 const endpoint = "http://api.brewerydb.com/v2/beers/?key=" //O endpoint da Api a ser consultado
 const apiKey = "47705820af1e5f9f31c6700101bc6494" //A chave da api cadastrada pelo desenvolvedor
 
+//Guarda a categoria do estilo
 type Category struct {
 	Id interface{} `json:"id"`
 	Name interface{} `json:"name"`
 	CreateDate interface{} `json:"createDate"`
 }
 
+//Guarda detalhes sobre a disponibilidade da bebida
 type Available struct {
 	Id interface{} `json:"id"`
 	Name interface{} `json:"name"`
 	Description interface{} `json:"description"`
 }
 
+//Guarda a informação sobre o estilo da bebida
 type Style struct {
 	Id interface{} `json:"id"`
 	CategoryId interface{} `json:"categoryId"`
@@ -44,6 +58,7 @@ type Style struct {
 	UpdateDate interface{} `json:"updateDate"`
 }
 
+//Guarda a informação da bebida individualmente
 type Beer struct {
 	Id interface{} `json:"id"`
 	Name interface{} `json:"name"`
@@ -62,6 +77,7 @@ type Beer struct {
 	BeerStyle Style `json:"style"`
 }
 
+//Guarda toda a informação da resposta
 type BeerApiResponse struct {
 	CurrentPage interface{} `json:"currentPage"`
 	NumberOfPages interface{} `json:"numberOfPages"`
@@ -69,6 +85,7 @@ type BeerApiResponse struct {
 	Data []Beer `json:"data"`
 }
 
+//Faz o teste de tipo de variável em cada campo de categoria
 func testCategoryTypes(category Category) []error {
 	var test_errors []error
 	
@@ -90,11 +107,11 @@ func testCategoryTypes(category Category) []error {
 	return test_errors
 }
 
+//Faz o teste de tipo de variável em cada campo de available
 func testAvailableTypes(available Available) []error {
 	var test_errors []error
 	
 	if !fieldIsNumber(available.Id) && available.Id != nil {
-		fmt.Println("Passou")
 		err := errors.New("O id de available (Available.Id) possui tipo diferente de int")
 		test_errors = append(test_errors, err)
 	}
@@ -112,6 +129,7 @@ func testAvailableTypes(available Available) []error {
 	return test_errors
 }
 
+//Faz o teste de tipo de variável em cada campo de estilo
 func testStyleTypes(style Style) []error {
 	var test_errors []error
 	
@@ -204,6 +222,7 @@ func testStyleTypes(style Style) []error {
 	return test_errors
 }
 
+//Faz o teste de tipo de variável em cada campo da bebida
 func testBeerTypes(beer Beer) []error {
 	var test_errors []error
 
@@ -287,16 +306,19 @@ func testBeerTypes(beer Beer) []error {
 	return test_errors
 }
 
+//Função que testa se o campo é uma string
 func fieldIsString(field interface{}) bool {
 	_, ok := field.(string)
 	return ok
 }
 
+//Função que testa se o campo é um número
 func fieldIsNumber(field interface{}) bool {
 	_, ok := field.(float64)
 	return ok
 }
 
+//Função que transforma o array json em dados estruturados
 func getAllBeers(body []byte) (*BeerApiResponse, error){
 	var beers = new (BeerApiResponse)
 	err := json.Unmarshal(body, &beers)
@@ -321,34 +343,37 @@ func TestMain(t *testing.T) {
 		t.Fatal(err_read)
 	}
 
-	beers, err_parse := getAllBeers(body) //Transforma o array de bytes em objetos
+	beers, _ := getAllBeers(body) //Transforma o array de bytes em objetos
 
-	var test_errors []error
+	var test_errors []error //Variável que guarda todos os erros registrados durante a checagem
 
+	//Testa se o campo CurrentPage é um número
 	if !fieldIsNumber(beers.CurrentPage) {
 		err := errors.New("A pagina atual (BeerApiResponse.CurrentPage) possui tipo diferente de int")
 		test_errors = append(test_errors, err)
 	}
 
+	//Testa se o campo NumberOfPages é um número
 	if !fieldIsNumber(beers.NumberOfPages) {
 		err := errors.New("O numero de paginas (BeerApiResponse.NumberOfPages) possui tipo diferente de int")
 		test_errors = append(test_errors, err)
 	}
 
+	//Testa se o campo TotalResults é um número
 	if !fieldIsNumber(beers.TotalResults) {
 		err := errors.New("O total de resultados (BeerApiResponse.TotalResults) possui tipo diferente de int")
 		test_errors = append(test_errors, err)
 	}
 
-	for i := range beers.Data {
-		arr := testBeerTypes(beers.Data[i])
+	for i := range beers.Data { //Percorre todas as bebidas da resposta
+		arr := testBeerTypes(beers.Data[i]) //Faz o teste de type assignment
 
-		for i := range arr {
+		for i := range arr { //Registra todos os erros no slice de erros
 			test_errors = append(test_errors, arr[i])
 		}
 	}
 
-	for i := range test_errors {
+	for i := range test_errors { //Notifica todos os erros que aconteceram durante o teste
 		t.Error(test_errors[i])
 	}
 
